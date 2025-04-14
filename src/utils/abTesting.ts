@@ -4,7 +4,7 @@ export const AB_TEST_GROUP_KEY = "ab-test-group";
 
 export function getTestGroup(): "A" | "B" {
   // Check if user already has a test group assigned
-  const storedGroup = getLocalStorage(AB_TEST_GROUP_KEY);
+  const storedGroup = getLocalStorage(AB_TEST_GROUP_KEY, "");
   if (storedGroup) {
     return storedGroup as "A" | "B";
   }

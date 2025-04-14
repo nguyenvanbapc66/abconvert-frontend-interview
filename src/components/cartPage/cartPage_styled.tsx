@@ -13,10 +13,10 @@ export default function CartPageStyled() {
 
   const router = useRouter();
 
-  const priceTotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const priceTotal = cart?.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   useEffect(() => {
-    const newCart = getLocalStorage(localStorageKeys.CART) as CartItem[];
+    const newCart = getLocalStorage(localStorageKeys.CART, []) as CartItem[];
     setCart(newCart);
   }, []);
 
