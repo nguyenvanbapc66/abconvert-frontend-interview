@@ -16,8 +16,8 @@ export default function CartPageStyled() {
   const priceTotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   useEffect(() => {
-    const cart = getLocalStorage(localStorageKeys.CART) as CartItem[];
-    setCart(cart);
+    const newCart = getLocalStorage(localStorageKeys.CART) as CartItem[];
+    setCart(newCart);
   }, []);
 
   const handleBackClick = () => {
