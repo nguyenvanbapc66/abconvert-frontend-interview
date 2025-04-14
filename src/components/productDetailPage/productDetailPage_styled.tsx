@@ -66,7 +66,7 @@ export default function ProductDetailPageStyled() {
             data-test-id={`product-${id}-image-container`}
           >
             <Image
-              src={product?.url ?? ""}
+              src={currentImage?.url ?? ""}
               alt={product?.name ?? ""}
               fill
               sizes="(min-width: 0) 50vw"
