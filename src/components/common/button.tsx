@@ -9,6 +9,7 @@ export default function Button({ children, className, ...props }: ButtonProps) {
         "w-full bg-black text-white px-4 py-2 rounded-lg text-lg font-bold hover:opacity-60 transition-all duration-300",
         className
       )}
+      aria-label="Common button"
       {...props}
     >
       {children}
