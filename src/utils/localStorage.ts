@@ -1,6 +1,14 @@
 export const getLocalStorage = (key: string) => {
   if (typeof window === "undefined") return;
-  return JSON.parse(localStorage.getItem(key) ?? "[]");
+  const value = localStorage.getItem(key);
+  if (value === null) return "[]";
+
+  try {
+    return JSON.parse(value);
+  } catch (e) {
+    // If parsing fails, return the raw value
+    return value;
+  }
 };
 
 export const setLocalStorage = (key: string, value: any) => {

@@ -1,90 +1,157 @@
-# Frontend Interview Challenge
+# ABConvert E-Commerce A/B Testing Platform
 
-![ecommerce_github_banner](https://github.com/user-attachments/assets/3018c781-0969-45a1-b8bb-3f638aa4260d)
+A modern e-commerce platform with built-in A/B testing capabilities, built using Next.js and Tailwind CSS. This platform allows for dynamic testing of product prices, content, and user interface elements to optimize conversion rates and revenue.
 
-## Requirements
+## Features
 
-- You must use Next.js and Tailwind CSS to build the project.
+- 🛍️ **E-Commerce Platform**
 
-- You may use any additional libraries, **but UI libraries that do not integrate with Tailwind CSS are not allowed.**
+  - Product listings with detailed views
+  - Shopping cart functionality
+  - Responsive product grid layout
+  - Product image galleries with sliders
 
-- While this is a frontend-focused challenge, you should write backend code if necessary (e.g., for SSR/SSG or handling API requests).
+- 🔄 **A/B Testing Dashboard**
 
-- Deploy the project to a publicly accessible URL.
+  - Real-time preview of e-commerce site
+  - Interactive element selection for testing
+  - Dynamic pricing variations
+  - AI-powered content suggestions
+  - Comprehensive analytics dashboard
 
-- Extra features that go beyond the requirements and impress us are encouraged!
+- 📊 **Advanced Analytics**
+  - Revenue per visitor tracking
+  - Average order value calculation
+  - Conversion rate analysis
+  - Price sensitivity metrics
+  - Time-based analytics (24h, 7d, 30d)
 
-## Project Description
+## Prerequisites
 
-This is a minimalistic e-commerce project built using Next.js and Tailwind CSS.
+- Node.js 18.x or later
+- npm or yarn
+- OpenAI API key (for content generation)
 
-## Task 1: E-Commerce Website
+## Installation
 
-- Build an e-commerce website based on the wireframe provided in the `assets` folder.
-- Design the UI and layout freely—do not limit yourself to a specific theme or style.
-- Add interactivity: Users must be able to add items to a shopping cart. Each user’s cart should be unique and persist independently (e.g., using local storage, cookies, or a backend solution).
-- For inspiration, you can refer to this [website](https://themes.shopify.com/). Feel free to draw ideas from its design or functionality, but do not copy it directly.
+1. Clone the repository:
 
-## Task 2: Preview and Content Editor
+```bash
+git clone [your-repository-url]
+cd abconvert-frontend-interview-question2
+```
 
-- Create an A/B test settings page that includes a live preview of the e-commerce site from Task 1 (e.g., via an iframe or embedded view).
-- Enable users to interact with the preview by clicking on specific UI elements (e.g., buttons, product descriptions) to mark them as areas for A/B testing.
-- Implement an A/B test on pricing: Split users into two groups upon visiting the site, with each group seeing different prices for the same products. You may choose the grouping method (e.g., random assignment, cookies, or URL parameters).
-- Integrate an LLM (e.g., via an API like OpenAI) to generate A/B test ideas and content variations for the selected areas, including pricing variations for testing.
-- Allow users to apply these LLM-generated suggestions (including price changes) directly to the e-commerce site, updating the live preview dynamically.
-- Finally, these changes must actually affect the Task 1 website and be reflected when it is accessed.
+2. Install dependencies:
 
-Note: OpenAI API Key will be provided along with your interview instructions.
+```bash
+npm install
+# or
+yarn install
+```
 
-## Evaluation criteria
+3. Create a `.env.local` file in the root directory and add your OpenAI API key:
 
-#### Requirement Fulfillment
+```
+OPENAI_API_KEY=your_api_key_here
+```
 
-- Does the project fully implement Task 1 and Task 2 as outlined?
-- Are there extra features that exceed the requirements?
+4. Start the development server:
 
-#### Code Readability
+```bash
+npm run dev
+# or
+yarn dev
+```
 
-- Are variable and function names meaningful and self-explanatory?
-- Is the naming convention consistent (e.g., camelCase, kebab-case)?
-- Are comments concise, relevant, and helpful?
+The application will be available at `http://localhost:3000`
 
-#### Code Quality
+## Project Structure
 
-- Does the project follow Next.js and Tailwind CSS best practices?
-- Is the code efficient, modular, and maintainable?
-- Are performance optimizations applied effectively?
-- Is the styling clean, responsive, and consistent?
+```
+├── src/
+│   ├── app/                    # Next.js app router pages
+│   │   ├── ab-testing/        # A/B testing dashboard
+│   │   └── api/               # API routes
+│   ├── components/            # Reusable UI components
+│   │   ├── ABTestAnalytics/   # Analytics dashboard
+│   │   └── productDetailPage/ # Product detail components
+│   ├── utils/                 # Utility functions
+│   │   └── abTesting.ts      # A/B testing core logic
+│   └── constants/            # Application constants
+├── public/                   # Static assets
+└── assets/                  # Project assets
+```
 
-#### Code Maintainability
+## A/B Testing Features
 
-- Does the project adhere to a consistent style guide (e.g., Prettier, ESLint)?
-- Is there clear documentation explaining the codebase?
+### Price Testing
 
-#### Code Performance
+- Dynamic price variations with multiple strategies:
+  - Percentage-based discounts (10%, 20%)
+  - Premium pricing
+  - Psychological pricing (e.g., $9.99)
+  - Rounded pricing
+- Price sensitivity analysis
+- Revenue impact tracking
 
-- Does the project pass performance tests? (Check using [PageSpeed Insights](https://pagespeed.web.dev/))
-- Minimum passing standard: Performance, Accessibility, Best Practices, and SEO must all score 90 or above.
+### Content Testing
 
-#### Documentation
+- AI-generated content variations
+- Image testing capabilities
+- CTA optimization
+- Product description variations
 
-- Is there a well-structured README file?
-- Does it cover setup, usage, and key features?
-- Are installation and deployment steps clear?
-- Are API endpoints (if any) documented with examples?
+### Analytics
 
-#### Communication
+- Real-time test results
+- Conversion rate tracking
+- Revenue metrics
+- Visitor behavior analysis
+- Time-based performance metrics
 
-- Can you explain your project clearly during a follow-up discussion?
-- Are questions or clarifications handled professionally and promptly?
+## API Endpoints
 
-## Submission
+### A/B Testing API
 
-Please submit the following to talent@abconvert.io.
+- `POST /api/generate-variations`
+  - Generates content variations for A/B testing
+  - Supports text, price, and image variations
+  - Uses OpenAI for content generation
 
-1. A public GitHub repository with your project code.
-2. A live URL.
-3. A demo video showcasing your project
+## Usage
 
-There is no strict deadline for this project; please submit it when you believe it is ready for review.
-Good luck :)
+1. **Create A/B Tests**
+
+   - Navigate to the A/B Testing dashboard
+   - Select elements to test
+   - Generate variations using AI
+   - Apply variations to test groups
+
+2. **Monitor Results**
+
+   - View real-time analytics
+   - Track conversion rates
+   - Monitor revenue impact
+   - Analyze visitor behavior
+
+3. **Optimize Performance**
+   - Compare test group performance
+   - Identify winning variations
+   - Implement successful changes
+   - Track long-term impact
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Contact
+
+For any questions or support, please contact talent@abconvert.io

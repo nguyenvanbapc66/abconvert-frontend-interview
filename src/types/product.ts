@@ -1,12 +1,4 @@
-type CartItem = {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  url: string;
-};
-
-type Product = {
+export interface Product {
   id: string;
   name: string;
   description: string;
@@ -16,4 +8,4 @@ type Product = {
   stock: number;
   createdAt: string;
   updatedAt: string;
-};
+}

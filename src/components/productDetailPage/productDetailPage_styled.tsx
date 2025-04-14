@@ -31,7 +31,7 @@ export default function ProductDetailPageStyled() {
 
       // Track view interactions for A/B testing
       trackTestInteraction(`productDetailPage-${id}-name`, "view");
-      trackTestInteraction(`productDetailPage-${id}-price`, "view");
+      trackTestInteraction(`productDetailPage-${id}-price`, "view", product.price);
       trackTestInteraction(`productDetailPage-${id}-description`, "view");
       trackTestInteraction(`productDetailPage-${id}-image`, "view");
       trackTestInteraction(`product-${id}-add-to-cart`, "view");
@@ -43,7 +43,10 @@ export default function ProductDetailPageStyled() {
   };
 
   const handleAddToCart = () => {
-    trackTestInteraction(`product-${id}-add-to-cart`, "click");
+    if (product) {
+      trackTestInteraction(`product-${id}-add-to-cart`, "click", product.price);
+      trackTestInteraction(`productDetailPage-${id}-price`, "click", product.price);
+    }
   };
 
   const handleImageClick = () => {

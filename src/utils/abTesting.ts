@@ -1,15 +1,17 @@
+import { getLocalStorage, setLocalStorage } from "./localStorage";
+
 export const AB_TEST_GROUP_KEY = "ab-test-group";
 
 export function getTestGroup(): "A" | "B" {
   // Check if user already has a test group assigned
-  const storedGroup = localStorage.getItem(AB_TEST_GROUP_KEY);
+  const storedGroup = getLocalStorage(AB_TEST_GROUP_KEY);
   if (storedGroup) {
     return storedGroup as "A" | "B";
   }
 
   // Randomly assign a test group (50/50 split)
   const group = Math.random() < 0.5 ? "A" : "B";
-  localStorage.setItem(AB_TEST_GROUP_KEY, group);
+  setLocalStorage(AB_TEST_GROUP_KEY, group);
   return group;
 }
 
@@ -31,7 +33,7 @@ export function applyTestVariation(elementId: string, content: string): string {
   }
 }
 
-export function trackTestInteraction(elementId: string, action: string) {
+export function trackTestInteraction(elementId: string, action: string, price?: number) {
   const group = getTestGroup();
   const interactions = JSON.parse(localStorage.getItem("ab-test-interactions") || "[]");
 
@@ -40,6 +42,7 @@ export function trackTestInteraction(elementId: string, action: string) {
     action,
     group,
     timestamp: new Date().toISOString(),
+    ...(price !== undefined && { price }),
   });
 
   localStorage.setItem("ab-test-interactions", JSON.stringify(interactions));

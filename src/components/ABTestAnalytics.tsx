@@ -7,6 +7,7 @@ interface TestInteraction {
   action: string;
   group: "A" | "B";
   timestamp: string;
+  price?: number;
 }
 
 interface TestVariation {
@@ -14,6 +15,16 @@ interface TestVariation {
   elementId: string;
   timestamp: string;
   contentType: string;
+  strategy?: string;
+}
+
+interface PriceTestMetrics {
+  revenuePerVisitor: number;
+  averageOrderValue: number;
+  conversionRate: number;
+  totalRevenue: number;
+  totalVisitors: number;
+  totalConversions: number;
 }
 
 export default function ABTestAnalytics() {
@@ -49,15 +60,60 @@ export default function ABTestAnalytics() {
     return interactions.filter((interaction) => new Date(interaction.timestamp) >= filterDate);
   };
 
-  const getConversionRate = (elementId: string, group: "A" | "B") => {
+  const calculatePriceMetrics = (elementId: string, group: "A" | "B"): PriceTestMetrics => {
     const filteredInteractions = getTimeFilteredInteractions().filter(
       (i) => i.elementId === elementId && i.group === group
     );
 
-    const totalViews = filteredInteractions.filter((i) => i.action === "view").length;
-    const totalClicks = filteredInteractions.filter((i) => i.action === "click").length;
+    const totalVisitors = filteredInteractions.filter((i) => i.action === "view").length;
+    const totalConversions = filteredInteractions.filter((i) => i.action === "click").length;
+    const totalRevenue = filteredInteractions.reduce((sum, i) => {
+      if (i.action === "click" && i.price) {
+        return sum + i.price;
+      }
+      return sum;
+    }, 0);
 
-    return totalViews > 0 ? (totalClicks / totalViews) * 100 : 0;
+    return {
+      revenuePerVisitor: totalVisitors > 0 ? totalRevenue / totalVisitors : 0,
+      averageOrderValue: totalConversions > 0 ? totalRevenue / totalConversions : 0,
+      conversionRate: totalVisitors > 0 ? (totalConversions / totalVisitors) * 100 : 0,
+      totalRevenue,
+      totalVisitors,
+      totalConversions,
+    };
+  };
+
+  const PriceTestResults = ({ elementId }: { elementId: string }) => {
+    const metricsA = calculatePriceMetrics(elementId, "A");
+    const metricsB = calculatePriceMetrics(elementId, "B");
+
+    return (
+      <div className="grid grid-cols-2 gap-4 mt-4">
+        <div className="border rounded p-4">
+          <h4 className="font-semibold mb-2">Control Group (A)</h4>
+          <div className="space-y-2">
+            <p>Revenue/Visitor: ${metricsA.revenuePerVisitor.toFixed(2)}</p>
+            <p>Avg Order Value: ${metricsA.averageOrderValue.toFixed(2)}</p>
+            <p>Conversion Rate: {metricsA.conversionRate.toFixed(2)}%</p>
+            <p>Total Revenue: ${metricsA.totalRevenue.toFixed(2)}</p>
+            <p>Total Visitors: {metricsA.totalVisitors}</p>
+            <p>Total Conversions: {metricsA.totalConversions}</p>
+          </div>
+        </div>
+        <div className="border rounded p-4">
+          <h4 className="font-semibold mb-2">Test Group (B)</h4>
+          <div className="space-y-2">
+            <p>Revenue/Visitor: ${metricsB.revenuePerVisitor.toFixed(2)}</p>
+            <p>Avg Order Value: ${metricsB.averageOrderValue.toFixed(2)}</p>
+            <p>Conversion Rate: {metricsB.conversionRate.toFixed(2)}%</p>
+            <p>Total Revenue: ${metricsB.totalRevenue.toFixed(2)}</p>
+            <p>Total Visitors: {metricsB.totalVisitors}</p>
+            <p>Total Conversions: {metricsB.totalConversions}</p>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -83,17 +139,15 @@ export default function ABTestAnalytics() {
               <div>
                 <p className="text-sm text-gray-500">Control (Group A)</p>
                 <p className="text-lg">Original Content</p>
-                <p className="text-sm text-gray-500">
-                  Conversion Rate: {getConversionRate(elementId, "A").toFixed(2)}%
-                </p>
               </div>
               <div>
                 <p className="text-sm text-gray-500">Test (Group B)</p>
                 <p className="text-lg">{test.content}</p>
-                <p className="text-sm text-gray-500">
-                  Conversion Rate: {getConversionRate(elementId, "B").toFixed(2)}%
-                </p>
+                {test.strategy && <p className="text-sm text-gray-500">Strategy: {test.strategy}</p>}
               </div>
+
+              {elementId.includes("price") && <PriceTestResults elementId={elementId} />}
+
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-500">Started: {new Date(test.timestamp).toLocaleDateString()}</span>
                 <button
